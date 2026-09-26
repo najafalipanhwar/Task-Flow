@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TaskFlow - a modern productivity dashboard built with HTML, CSS and JavaScript.">
+  <title>TaskFlow — Productivity Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">T</div>
+        <div>
+          <strong>TaskFlow</strong>
+          <span>Productivity OS</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-view="overview"><span>⌂</span> Overview</button>
+        <button class="nav-item" data-view="tasks"><span>✓</span> My Tasks</button>
+        <button class="nav-item" data-view="analytics"><span>◔</span> Analytics</button>
+      </nav>
+
+      <div class="sidebar-card">
+        <div class="mini-orb">✦</div>
+        <h3>Stay on track</h3>
+        <p>Small progress every day creates big results.</p>
+        <button class="ghost-btn" id="focusBtn">Start focus</button>
+      </div>
+
+      <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        <span>All systems ready</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Open menu">☰</button>
+        <div class="topbar-copy">
+          <p id="greeting">Good afternoon</p>
+          <h1 id="pageTitle">Overview</h1>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">☾</button>
+          <button class="avatar" id="profileBtn" aria-label="Profile">AF</button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="view active" id="overviewView">
+          <div class="hero">
+            <div>
+              <span class="eyebrow">YOUR WORKSPACE</span>
+              <h2>Make today count.</h2>
+              <p>Organize your priorities, keep momentum, and see your progress at a glance.</p>
+            </div>
+            <button class="primary-btn" id="heroAddBtn"><span>＋</span> Add task</button>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-icon blue">✓</div>
+              <div><span>Completed</span><strong id="completedStat">0</strong></div>
+              <small id="completedTrend">0% of all tasks</small>
+            </article>
+            <article class="stat-card">
+              <div class="stat-icon purple">◷</div>
+              <div><span>In progress</span><strong id="progressStat">0</strong></div>
+              <small>Keep the momentum</small>
+            </article>
+            <article class="stat-card">
+              <div class="stat-icon orange">!</div>
+              <div><span>High priority</span><strong id="priorityStat">0</strong></div>
+              <small>Needs your attention</small>
+            </article>
+            <article class="stat-card">
+              <div class="stat-icon green">↗</div>
+              <div><span>Completion rate</span><strong id="rateStat">0%</strong></div>
+              <small id="rateMessage">Let's get started</small>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel task-panel">
+              <div class="panel-head">
+                <div>
+                  <h3>Recent tasks</h3>
+                  <p>Your latest priorities</p>
+                </div>
+                <button class="text-btn" data-view-link="tasks">View all →</button>
+              </div>
+              <div class="task-list" id="recentTasks"></div>
+              <div class="empty-state hidden" id="recentEmpty">
+                <div>✓</div>
+                <h4>No tasks yet</h4>
+                <p>Create your first task to get moving.</p>
+              </div>
+            </section>
+
+            <section class="panel progress-panel">
+              <div class="panel-head">
+                <div>
+                  <h3>Weekly progress</h3>
+                  <p>Task completion overview</p>
+                </div>
+              </div>
+              <div class="progress-ring-wrap">
+                <div class="progress-ring" id="progressRing">
+                  <div><strong id="ringValue">0%</strong><span>complete</span></div>
+                </div>
+              </div>
+              <div class="legend">
+                <span><i class="dot done"></i> Completed <b id="legendDone">0</b></span>
+                <span><i class="dot remaining"></i> Remaining <b id="legendRemaining">0</b></span>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="view" id="tasksView">
+          <div class="page-intro">
+            <div><span class="eyebrow">WORKSPACE</span><h2>My Tasks</h2><p>Manage everything you need to get done.</p></div>
+            <button class="primary-btn" id="tasksAddBtn">＋ Add task</button>
+          </div>
+          <div class="toolbar">
+            <div class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search tasks..."></div>
+            <div class="filter-group">
+              <button class="filter active" data-filter="all">All</button>
+              <button class="filter" data-filter="active">Active</button>
+              <button class="filter" data-filter="completed">Completed</button>
+              <button class="filter" data-filter="high">High priority</button>
+            </div>
+          </div>
+          <section class="panel">
+            <div class="panel-head"><div><h3>Task list</h3><p id="taskCount">0 tasks</p></div></div>
+            <div class="task-list full" id="allTasks"></div>
+            <div class="empty-state hidden" id="allEmpty"><div>⌁</div><h4>Nothing found</h4><p>Try a different search or create a new task.</p></div>
+          </section>
+        </div>
+
+        <div class="view" id="analyticsView">
+          <div class="page-intro">
+            <div><span class="eyebrow">INSIGHTS</span><h2>Analytics</h2><p>Understand your productivity at a glance.</p></div>
+          </div>
+          <div class="analytics-grid">
+            <section class="panel chart-panel">
+              <div class="panel-head"><div><h3>Productivity snapshot</h3><p>Current task distribution</p></div></div>
+              <div class="bar-chart" id="barChart"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><div><h3>Priority breakdown</h3><p>Where your attention goes</p></div></div>
+              <div class="priority-list" id="priorityBreakdown"></div>
+            </section>
+          </div>
+          <section class="panel insight-panel">
+            <div class="insight-icon">✦</div>
+            <div><h3>Productivity insight</h3><p id="insightText">Add a few tasks and TaskFlow will surface a useful insight here.</p></div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="closeModal" aria-label="Close">×</button>
+      <div class="modal-head"><span class="modal-kicker">TASK</span><h2 id="modalTitle">Create a new task</h2><p>Keep it clear, actionable, and easy to finish.</p></div>
+      <form id="taskForm">
+        <input type="hidden" id="taskId">
+        <label>Task title<input id="taskTitle" required maxlength="100" placeholder="e.g. Finish portfolio homepage"></label>
+        <label>Description<textarea id="taskDescription" maxlength="240" rows="3" placeholder="What does success look like?"></textarea></label>
+        <div class="form-row">
+          <label>Priority<select id="taskPriority"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></label>
+          <label>Due date<input id="taskDue" type="date"></label>
+        </div>
+        <button class="primary-btn submit-btn" type="submit" id="submitTask">Create task</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/script.js"></script>
+</body>
+</html>
